@@ -71,8 +71,8 @@ vrms_array =zeros(1,1000);
 pScatter = 1- (exp((-1*dt) / (0.2e-12))); %probability of scatter 
 
 
-current_Vector = zeros(1,nParticles);
-time_Vector = zeros(1,nParticles);
+current_Vector = zeros(1,iter);
+time_Vector = 1:1:iter;
 
 %Accelerations
 accelerationx = zeros(1,nParticles);
@@ -125,7 +125,7 @@ for i=1: iter
     current = concentration * area * (sum(D_Velocity)/nParticles) * q; 
     
     current_Vector(i) = current;
-    time_vector(i) = i;
+%     time_vector(i) = i;
     
     %scatteting with velocities
     Scattering = pScatter > rand(1,nParticles);
