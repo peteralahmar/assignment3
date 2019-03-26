@@ -186,8 +186,7 @@ rnxPos = (floor(initialx .* 10^8)) +1;
 rnyPos = (floor(initialy.* 10^8)) +1;
 
 %indexing
-oldx = initialx;
-oldy = initialy;
+
 ind = sub2ind([80,80], rnxPos, rnyPos);
 
 for i=1: iter
@@ -210,28 +209,17 @@ for i=1: iter
     
     
     inside = (((initialx <(3/5 * xboundary))&(initialx > (2/5* xboundary))) & (( initialy< (yboundary/5)) | (initialy > (4*yboundary/5))));
-    inside2= (oldx< (xboundary *3/5) &  (oldx > (xboundary * 2/5)) & inside);
+    inside2= (oldx< (xboundary *3/5) &  (oldx > (xboundary * 2/5)) & inside;
     
     velocityy(inside2) = - velocityy(inside2);
     initialx(inside2) = oldx(inside2);
     initialy(inside2) = oldy(inside2);
-    
-    inside3= (oldx> (xboundary *3/5) &  (oldx < (xboundary * 2/5)) & inside);
-    
-    velocityx(inside3) = - velocityx(inside3);
-    initialx(inside3) = oldx(inside3);
-    initialy(inside3) = oldy(inside3);
+
     
     oldx = initialx;
     oldy = initialy;
     
-
-    rnxPos = (floor(initialx(1,:) .* 10^8)) +1;
-    rnyPos = (floor(initialy(1,:).* 10^8)) +1;
-    
-    accelerationx = Efy(ind) * (q/em);
-    accelerationy = Efx(ind) * (q/em);
-    
+    inside3= ((oldx> xboundary *3/5) &  (oldx > (xboundary * 2/5)) & inside);
     
     velocityx = velocityx + (accelerationx .* dt);
     velocityy = velocityy + (accelerationy .* dt);
@@ -285,48 +273,9 @@ for i=1: iter
     hold on;   
 end
 
-[xgr,ygr] = meshgrid(0:(xboundary/30):xboundary, 0:(yboundary/30):yboundary);
-electron_M = zeros(30,30);
-temperature_M = zeros(30,30);
-num_Elec = 0;
-Total_vel = 0;
 
-for k = 1:30
-    x_min = xgr(1,k);
-    x_max = xgr(1,k+1);
-    
-    for m = 1:30    
-        y_min = ygr(m,1);
-        y_max = ygr(m+1,1);
-        
-        for n = 1:nParticles
-            if ((initialx(n) >x_min) && (initialx(n) < x_max) && ((initialy(n) > y_min) && initialy(n) <y_max))
-                num_Elec = num_Elec +1;
-                electron_M(k,m) = electron_M(k,m) + 1;
-                Total_vel = Total_vel + sqrt((velocityx(n) .^2) + (velocityy(n) .^2));
-                
-                if(num_Elec ~=0)
-                temperature_M(k,m) = ((sqrt(2)*(Total_vel/num_Elec)^2)*em)/kb;
-                end
-            end
-             
-        end
-        Total_vel = 0;
-        num_Elec = 0;
-        
-    end
-    
-end
 
-% Creating an Electron Map
-figure(5);
-surf(flipud(electron_M));
-title('Electron Density Map');
-    
-%Creating a Temperature Map
-figure(6);
-surf(flipud(temperature_M));
-title('Temperature Map');
+
 
 
 

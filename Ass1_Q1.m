@@ -46,8 +46,8 @@ dt = 2* 10e-15;
 temparray = zeros(1,1000); % temp array
 temp = (1:1:1000);
 
-%60 random electrons to be chosen
-chosen = randi([1, nParticles], 1, 60);
+%7 random electrons to be chosen
+chosen = randi([1, nParticles], 1, 7);
 
 inside_box = true;
 while inside_box == true
